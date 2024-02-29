@@ -1,6 +1,7 @@
 import subprocess
 import os
 import ctypes
+from time import sleep
 
 
 def printTxt(txt):
@@ -22,12 +23,15 @@ with open(dllpath, mode='rb') as f:
     srcdll = f.read()
 
 patch_offset = srcdll.find(find_bytes)
+
 if patch_offset == -1:
     if srcdll.find(patch_bytes) > 0:
         printTxt('File already patched')
     else:
         printTxt('File not supported')
-    input('\nPress enter to exit')
+    for i in range(5, 0, -1):
+        print('.' * i + ' ' * (5 - i), end='\r')
+        sleep(1)
     exit()
 else:
     printTxt(f'Found target bytes at 0x{patch_offset:0X}')
